@@ -1,0 +1,408 @@
+---
+title: "EDA"
+output: html_document
+---
+
+```{r}
+files <- c(
+  "20240604-203035-test 89.csv",
+  "20240605-214932-CC-07-90.csv",
+  "20240605-214932-CC-07-90_gps.csv"
+)
+
+for (f in files) {
+  cat("\n============================\n")
+  cat("File:", f, "\n")
+  cat("============================\n")
+
+  df <- read.csv(f, nrows = 5, check.names = FALSE)
+  print(names(df))
+}
+```
+
+```{r}
+shark1 <- read.csv("20240604-203035-test 89.csv", check.names = FALSE)
+shark2 <- read.csv("20240605-214932-CC-07-90.csv", check.names = FALSE)
+
+dim(shark1)
+dim(shark2)
+
+str(shark1)
+str(shark2)
+
+head(shark1[, 1:10])
+head(shark2[, 1:10])
+```
+
+```{r}
+na_count1 <- colSums(is.na(shark1))
+na_count2 <- colSums(is.na(shark2))
+
+print(na_count1)
+print(na_count2)
+```
+
+```{r}
+unique_count1 <- sapply(shark1, function(x) length(unique(x)))
+unique_count2 <- sapply(shark2, function(x) length(unique(x)))
+
+print(unique_count1)
+print(unique_count2)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+shark1_clean <- shark1
+shark2_clean <- shark2
+
+names(shark1_clean)[names(shark1_clean) == "Accelerometer X [m/s\xb2]"] <- "acc_x"
+names(shark1_clean)[names(shark1_clean) == "Accelerometer Y [m/s\xb2]"] <- "acc_y"
+names(shark1_clean)[names(shark1_clean) == "Accelerometer Z [m/s\xb2]"] <- "acc_z"
+names(shark1_clean)[names(shark1_clean) == "Gyroscope X [mrad/s]"] <- "gyro_x"
+names(shark1_clean)[names(shark1_clean) == "Gyroscope Y [mrad/s]"] <- "gyro_y"
+names(shark1_clean)[names(shark1_clean) == "Gyroscope Z [mrad/s]"] <- "gyro_z"
+names(shark1_clean)[names(shark1_clean) == "Magnetometer X [\xb5T]"] <- "mag_x"
+names(shark1_clean)[names(shark1_clean) == "Magnetometer Y [\xb5T]"] <- "mag_y"
+names(shark1_clean)[names(shark1_clean) == "Magnetometer Z [\xb5T]"] <- "mag_z"
+names(shark1_clean)[names(shark1_clean) == "Temperature (imu) [\xb0C]"] <- "temp_imu"
+names(shark1_clean)[names(shark1_clean) == "Depth (100bar) 1 [m]"] <- "depth_m"
+names(shark1_clean)[names(shark1_clean) == "Depth (100bar) 2 [\xb0C]"] <- "depth_temp"
+names(shark1_clean)[names(shark1_clean) == "Light intensity 1 [raw]"] <- "light_1"
+names(shark1_clean)[names(shark1_clean) == "Light intensity 2 [raw]"] <- "light_2"
+names(shark1_clean)[names(shark1_clean) == "BATT [V]"] <- "batt_v"
+names(shark1_clean)[names(shark1_clean) == "BATT [mA]"] <- "batt_ma"
+names(shark1_clean)[names(shark1_clean) == "BATT [mAh]"] <- "batt_mah"
+
+names(shark2_clean)[names(shark2_clean) == "Accelerometer X [m/s\xb2]"] <- "acc_x"
+names(shark2_clean)[names(shark2_clean) == "Accelerometer Y [m/s\xb2]"] <- "acc_y"
+names(shark2_clean)[names(shark2_clean) == "Accelerometer Z [m/s\xb2]"] <- "acc_z"
+names(shark2_clean)[names(shark2_clean) == "Gyroscope X [mrad/s]"] <- "gyro_x"
+names(shark2_clean)[names(shark2_clean) == "Gyroscope Y [mrad/s]"] <- "gyro_y"
+names(shark2_clean)[names(shark2_clean) == "Gyroscope Z [mrad/s]"] <- "gyro_z"
+names(shark2_clean)[names(shark2_clean) == "Magnetometer X [\xb5T]"] <- "mag_x"
+names(shark2_clean)[names(shark2_clean) == "Magnetometer Y [\xb5T]"] <- "mag_y"
+names(shark2_clean)[names(shark2_clean) == "Magnetometer Z [\xb5T]"] <- "mag_z"
+names(shark2_clean)[names(shark2_clean) == "Temperature (imu) [\xb0C]"] <- "temp_imu"
+names(shark2_clean)[names(shark2_clean) == "Depth (200bar) 1 [m]"] <- "depth_m"
+names(shark2_clean)[names(shark2_clean) == "Depth (200bar) 2 [\xb0C]"] <- "depth_temp"
+names(shark2_clean)[names(shark2_clean) == "Light intensity 1 [raw]"] <- "light_1"
+names(shark2_clean)[names(shark2_clean) == "Light intensity 2 [raw]"] <- "light_2"
+names(shark2_clean)[names(shark2_clean) == "BATT [V]"] <- "batt_v"
+names(shark2_clean)[names(shark2_clean) == "BATT [mA]"] <- "batt_ma"
+names(shark2_clean)[names(shark2_clean) == "BATT [mAh]"] <- "batt_mah"
+
+shark1_clean$datetime_local <- as.POSIXct(
+  paste(shark1_clean[["Date (local)"]], shark1_clean[["Time (local)"]]),
+  format = "%d.%m.%Y %H:%M:%OS"
+)
+
+shark2_clean$datetime_local <- as.POSIXct(
+  paste(shark2_clean[["Date (local)"]], shark2_clean[["Time (local)"]]),
+  format = "%d.%m.%Y %H:%M:%OS"
+)
+
+shark1_plot <- shark1_clean[seq(1, nrow(shark1_clean), by = 100), ]
+shark2_plot <- shark2_clean[seq(1, nrow(shark2_clean), by = 100), ]
+
+shark1_plot$shark_id <- "Shark 1"
+shark2_plot$shark_id <- "Shark 2"
+
+shark1_plot$hours_since_start <- as.numeric(
+  difftime(shark1_plot$datetime_local, min(shark1_plot$datetime_local), units = "hours")
+)
+
+shark2_plot$hours_since_start <- as.numeric(
+  difftime(shark2_plot$datetime_local, min(shark2_plot$datetime_local), units = "hours")
+)
+
+combined_depth_relative <- bind_rows(
+  shark1_plot[, c("hours_since_start", "depth_m", "shark_id")],
+  shark2_plot[, c("hours_since_start", "depth_m", "shark_id")]
+)
+
+ggplot(combined_depth_relative, aes(x = hours_since_start, y = depth_m, color = shark_id)) +
+  geom_line(alpha = 0.5) +
+  labs(
+    title = "Depth over Relative Time for Two Sharks",
+    x = "Hours Since Start of Recording",
+    y = "Depth (m)",
+    color = "Shark"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(combined_depth_relative, aes(x = depth_m, fill = shark_id)) +
+  geom_histogram(bins = 50, alpha = 0.5, position = "identity") +
+  labs(
+    title = "Depth Distribution for Two Sharks",
+    x = "Depth (m)",
+    y = "Count",
+    fill = "Shark"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(combined_depth_relative, aes(x = shark_id, y = depth_m, fill = shark_id)) +
+  geom_boxplot(alpha = 0.7, outlier.alpha = 0.2) +
+  labs(
+    title = "Depth Boxplot by Shark",
+    x = "Shark",
+    y = "Depth (m)",
+    fill = "Shark"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+summary(shark1_clean$light_1)
+summary(shark2_clean$light_1)
+
+sort(table(shark1_clean$light_1), decreasing = TRUE)[1:10]
+sort(table(shark2_clean$light_1), decreasing = TRUE)[1:10]
+```
+
+```{r}
+combined_light_hist <- bind_rows(
+  shark1_plot[, c("light_1", "shark_id")],
+  shark2_plot[, c("light_1", "shark_id")]
+)
+
+ggplot(combined_light_hist, aes(x = light_1, fill = shark_id)) +
+  geom_histogram(bins = 50, alpha = 0.5, position = "identity") +
+  labs(
+    title = "Distribution of Light Intensity 1 for Two Sharks",
+    x = "Light Intensity 1",
+    y = "Count",
+    fill = "Shark"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+summary(shark1_clean$light_2)
+summary(shark2_clean$light_2)
+
+sort(table(shark1_clean$light_2), decreasing = TRUE)[1:10]
+sort(table(shark2_clean$light_2), decreasing = TRUE)[1:10]
+
+combined_light2_hist <- bind_rows(
+  shark1_plot[, c("light_2", "shark_id")],
+  shark2_plot[, c("light_2", "shark_id")]
+)
+
+ggplot(combined_light2_hist, aes(x = light_2, fill = shark_id)) +
+  geom_histogram(bins = 50, alpha = 0.5, position = "identity") +
+  labs(
+    title = "Distribution of Light Intensity 2 for Two Sharks",
+    x = "Light Intensity 2",
+    y = "Count",
+    fill = "Shark"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+combined_temp <- bind_rows(
+  shark1_plot[, c("hours_since_start", "depth_temp", "shark_id")],
+  shark2_plot[, c("hours_since_start", "depth_temp", "shark_id")]
+)
+
+ggplot(combined_temp, aes(x = depth_temp, fill = shark_id)) +
+  geom_histogram(bins = 50, alpha = 0.5, position = "identity") +
+  labs(
+    title = "Water Temperature Distribution for Two Sharks",
+    x = "Water Temperature",
+    y = "Count",
+    fill = "Shark"
+  ) +
+  theme_minimal()
+
+ggplot(combined_temp, aes(x = hours_since_start, y = depth_temp, color = shark_id)) +
+  geom_line(alpha = 0.5) +
+  labs(
+    title = "Water Temperature over Relative Time for Two Sharks",
+    x = "Hours Since Start of Recording",
+    y = "Water Temperature",
+    color = "Shark"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+combined_depth_temp <- bind_rows(
+  shark1_plot[, c("depth_m", "depth_temp", "shark_id")],
+  shark2_plot[, c("depth_m", "depth_temp", "shark_id")]
+)
+
+ggplot(combined_depth_temp, aes(x = depth_m, y = depth_temp, color = shark_id)) +
+  geom_point(alpha = 0.15, size = 0.6) +
+  labs(
+    title = "Depth vs Water Temperature for Two Sharks",
+    x = "Depth (m)",
+    y = "Water Temperature",
+    color = "Shark"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+cor_shark1 <- cor(shark1_plot$depth_m, shark1_plot$depth_temp, use = "complete.obs")
+cor_shark2 <- cor(shark2_plot$depth_m, shark2_plot$depth_temp, use = "complete.obs")
+
+cor_shark1
+cor_shark2
+```
+
+```{r}
+library(zoo)
+
+roll_n <- 200
+
+shark1_plot$acc_x_static <- zoo::rollmean(shark1_plot$acc_x, k = roll_n, fill = NA, align = "center")
+shark1_plot$acc_y_static <- zoo::rollmean(shark1_plot$acc_y, k = roll_n, fill = NA, align = "center")
+shark1_plot$acc_z_static <- zoo::rollmean(shark1_plot$acc_z, k = roll_n, fill = NA, align = "center")
+
+shark2_plot$acc_x_static <- zoo::rollmean(shark2_plot$acc_x, k = roll_n, fill = NA, align = "center")
+shark2_plot$acc_y_static <- zoo::rollmean(shark2_plot$acc_y, k = roll_n, fill = NA, align = "center")
+shark2_plot$acc_z_static <- zoo::rollmean(shark2_plot$acc_z, k = roll_n, fill = NA, align = "center")
+
+shark1_plot$acc_x_dyn <- shark1_plot$acc_x - shark1_plot$acc_x_static
+shark1_plot$acc_y_dyn <- shark1_plot$acc_y - shark1_plot$acc_y_static
+shark1_plot$acc_z_dyn <- shark1_plot$acc_z - shark1_plot$acc_z_static
+
+shark2_plot$acc_x_dyn <- shark2_plot$acc_x - shark2_plot$acc_x_static
+shark2_plot$acc_y_dyn <- shark2_plot$acc_y - shark2_plot$acc_y_static
+shark2_plot$acc_z_dyn <- shark2_plot$acc_z - shark2_plot$acc_z_static
+
+shark1_plot$odba <- abs(shark1_plot$acc_x_dyn) + abs(shark1_plot$acc_y_dyn) + abs(shark1_plot$acc_z_dyn)
+shark2_plot$odba <- abs(shark2_plot$acc_x_dyn) + abs(shark2_plot$acc_y_dyn) + abs(shark2_plot$acc_z_dyn)
+```
+
+```{r}
+combined_odba <- bind_rows(
+  shark1_plot[, c("hours_since_start", "odba", "shark_id")],
+  shark2_plot[, c("hours_since_start", "odba", "shark_id")]
+)
+
+ggplot(combined_odba, aes(x = hours_since_start, y = odba, color = shark_id)) +
+  geom_line(alpha = 0.5) +
+  labs(
+    title = "ODBA over Relative Time for Two Sharks",
+    x = "Hours Since Start of Recording",
+    y = "ODBA",
+    color = "Shark"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+library(zoo)
+
+shark1_plot$odba_smooth <- zoo::rollmean(shark1_plot$odba, k = 50, fill = NA, align = "center")
+shark2_plot$odba_smooth <- zoo::rollmean(shark2_plot$odba, k = 50, fill = NA, align = "center")
+```
+
+```{r}
+ggplot(shark1_plot, aes(x = hours_since_start, y = odba_smooth)) +
+  geom_line(alpha = 0.8) +
+  labs(
+    title = "Shark 1: Smoothed ODBA over Relative Time",
+    x = "Hours Since Start of Recording",
+    y = "Smoothed ODBA"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(shark2_plot, aes(x = hours_since_start, y = odba_smooth)) +
+  geom_line(alpha = 0.8) +
+  labs(
+    title = "Shark 2: Smoothed ODBA over Relative Time",
+    x = "Hours Since Start of Recording",
+    y = "Smoothed ODBA"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+combined_odba_depth <- bind_rows(
+  shark1_plot[, c("depth_m", "odba_smooth", "shark_id")],
+  shark2_plot[, c("depth_m", "odba_smooth", "shark_id")]
+)
+
+ggplot(combined_odba_depth, aes(x = depth_m, y = odba_smooth, color = shark_id)) +
+  geom_point(alpha = 0.15, size = 0.6) +
+  labs(
+    title = "Smoothed ODBA vs Depth for Two Sharks",
+    x = "Depth (m)",
+    y = "Smoothed ODBA",
+    color = "Shark"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+install.packages("hexbin")
+library(hexbin)
+```
+
+```{r}
+ggplot(shark1_plot, aes(x = depth_m, y = odba_smooth)) +
+  geom_point(alpha = 0.12, size = 0.6) +
+  labs(
+    title = "Shark 1: Smoothed ODBA vs Depth",
+    x = "Depth (m)",
+    y = "Smoothed ODBA"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(shark2_plot, aes(x = depth_m, y = odba_smooth)) +
+  geom_point(alpha = 0.12, size = 0.6) +
+  labs(
+    title = "Shark 2: Smoothed ODBA vs Depth",
+    x = "Depth (m)",
+    y = "Smoothed ODBA"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(shark1_plot, aes(x = hours_since_start)) +
+  geom_line(aes(y = depth_m / max(depth_m, na.rm = TRUE), color = "Depth")) +
+  geom_line(aes(y = odba_smooth / max(odba_smooth, na.rm = TRUE), color = "Smoothed ODBA")) +
+  labs(
+    title = "Shark 1: Relative Depth and Smoothed ODBA over Time",
+    x = "Hours Since Start of Recording",
+    y = "Scaled Value",
+    color = "Variable"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(shark2_plot, aes(x = hours_since_start)) +
+  geom_line(aes(y = depth_m / max(depth_m, na.rm = TRUE), color = "Depth")) +
+  geom_line(aes(y = odba_smooth / max(odba_smooth, na.rm = TRUE), color = "Smoothed ODBA")) +
+  labs(
+    title = "Shark 2: Relative Depth and Smoothed ODBA over Time",
+    x = "Hours Since Start of Recording",
+    y = "Scaled Value",
+    color = "Variable"
+  ) +
+  theme_minimal()
+```
+
+
+
