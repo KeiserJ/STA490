@@ -1,0 +1,74 @@
+================================================================================
+PRESENTATION STATS LOG (3-Variable HMM)
+================================================================================
+
+--- Shark 1 State Structure ---
+  State 1: Night Cruising
+    n = 144 (38.0%)
+    depth = 36.0 ± 25.8 m
+    ODBA  = 0.632 ± 0.200
+    light = 29
+    temp  = 22.7 °C
+  State 2: Surface Active
+    n = 62 (16.4%)
+    depth = 1.6 ± 0.1 m
+    ODBA  = 4.410 ± 0.261
+    light = 19947
+    temp  = 24.7 °C
+  State 3: Day Cruising
+    n = 173 (45.6%)
+    depth = 36.8 ± 14.9 m
+    ODBA  = 0.664 ± 0.296
+    light = 26752
+    temp  = 23.4 °C
+
+--- Shark 2 State Structure ---
+  State 1: Surface Active
+    n = 74 (20.4%)
+    depth = 0.6 ± 0.3 m
+    ODBA  = 4.537 ± 0.304
+    light = 21839
+    temp  = 25.0 °C
+  State 2: Deep Diving / Foraging
+    n = 160 (44.2%)
+    depth = 45.0 ± 13.6 m
+    ODBA  = 0.661 ± 0.135
+    light = 17986
+    temp  = 23.1 °C
+  State 3: Cruising
+    n = 128 (35.4%)
+    depth = 24.1 ± 9.5 m
+    ODBA  = 0.490 ± 0.081
+    light = 3
+    temp  = 23.4 °C
+
+--- Model Fit ---
+  Shark 1: AIC = -32.4, BIC = 70.0
+  Shark 2: AIC = -821.5, BIC = -720.4
+
+--- Diel: Day vs Night ---
+  Shark 1: χ² = 299.1, p = 1.11e-65, Cramér's V = 0.888
+  Shark 2: χ² = 345.2, p = 1.12e-75, Cramér's V = 0.976
+
+--- Shared State: Surface Active ---
+  Shark 1: n=62, depth=1.6m, ODBA=4.410, light=19947
+  Shark 2: n=74, depth=0.6m, ODBA=4.537, light=21839
+  Depth: U=4464, p=0.0000 ***
+  ODBA: U=1771, p=0.0224 *
+  Light 1: U=961, p=0.0000 ***
+
+--- State Persistence (diagonal) ---
+  Shark 1:
+    Night Cruising: 0.9662
+    Surface Active: 0.9836
+    Day Cruising: 0.9605
+  Shark 2:
+    Surface Active: 0.9863
+    Deep Diving / Foraging: 0.9812
+    Cruising: 0.9922
+
+--- KEY FINDING ---
+  Light reorganizes states differently across sharks:
+  Shark 1: light splits Cruising into Day vs Night (no Deep Diving state)
+  Shark 2: light preserves Cruising / Deep Diving / Surface Active
+  Only Surface Active is shared and directly comparable

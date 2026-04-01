@@ -1,0 +1,58 @@
+Shark 1 mapping: {1: 'Cruising / Routine Swimming', 2: 'Deep Diving / Foraging', 3: 'Surface Active'}
+Shark 2 mapping: {1: 'Deep Diving / Foraging', 2: 'Surface Active', 3: 'Cruising / Routine Swimming'}
+
+================================================================================
+2-VARIABLE HMM PRESENTATION LOG
+================================================================================
+
+--- Shark 1 ---
+  Cruising / Routine Swimming
+    n=253 (66.8%), depth=34.4±16.4m, ODBA=0.565, temp=23.3°C, light=15780
+  Deep Diving / Foraging
+    n=64 (16.9%), depth=44.5±31.0m, ODBA=0.985, temp=22.3°C, light=9997
+  Surface Active
+    n=62 (16.4%), depth=1.6±0.1m, ODBA=4.410, temp=24.7°C, light=19947
+
+--- Shark 2 ---
+  Deep Diving / Foraging
+    n=149 (41.2%), depth=47.9±11.0m, ODBA=0.674, temp=22.9°C, light=16353
+  Surface Active
+    n=74 (20.4%), depth=0.6±0.3m, ODBA=4.537, temp=25.0°C, light=21839
+  Cruising / Routine Swimming
+    n=139 (38.4%), depth=22.7±7.9m, ODBA=0.489, temp=23.6°C, light=3176
+
+--- Diel χ² ---
+  Shark 1: χ²=41.5, p=9.84e-10, V=0.331
+  Shark 2: χ²=211.3, p=1.32e-46, V=0.764
+
+--- Day vs Night ---
+  Shark 1:
+    Day (06–18): Cruising=58%, Deep Diving=17%, Surface Active=25%
+    Night (18–06): Cruising=83%, Deep Diving=17%, Surface Active=0%
+  Shark 2:
+    Day (06–18): Cruising=10%, Deep Diving=57%, Surface Active=32%
+    Night (18–06): Cruising=87%, Deep Diving=13%, Surface Active=0%
+
+--- Cross-shark Mann-Whitney (same behavior) ---
+  Cruising:
+    Depth: Sh1=34.4, Sh2=22.7, p=0.0000 ***
+    ODBA: Sh1=0.6, Sh2=0.5, p=0.0000 ***
+    Temp: Sh1=23.3, Sh2=23.6, p=0.0760 ns
+    Light: Sh1=15780.1, Sh2=3176.3, p=0.0000 ***
+  Deep Diving:
+    Depth: Sh1=44.5, Sh2=47.9, p=0.1066 ns
+    ODBA: Sh1=1.0, Sh2=0.7, p=0.0000 ***
+    Temp: Sh1=22.3, Sh2=22.9, p=0.2026 ns
+    Light: Sh1=9997.2, Sh2=16353.2, p=0.0000 ***
+  Surface Active:
+    Depth: Sh1=1.6, Sh2=0.6, p=0.0000 ***
+    ODBA: Sh1=4.4, Sh2=4.5, p=0.0224 *
+    Temp: Sh1=24.7, Sh2=25.0, p=0.6386 ns
+    Light: Sh1=19947.4, Sh2=21839.1, p=0.0000 ***
+
+--- Transition persistence ---
+  Shark 1: Cruising=0.9305, Deep Diving=0.7400, Surface Active=0.9836
+  Shark 2: Cruising=0.9788, Deep Diving=0.9672, Surface Active=0.9863
+
+--- JSD ---
+  Mean=0.422, Most similar=03:00 (0.000), Most different=14:00 (0.771)

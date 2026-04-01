@@ -1,0 +1,31 @@
+Shark 1 (3-var): {1: 'Night Cruising', 2: 'Surface Active', 3: 'Day Cruising'}
+Shark 2 (3-var): {1: 'Surface Active', 2: 'Deep Diving / Foraging', 3: 'Night Cruising'}
+
+--- AIC/BIC ---
+  Shark 1: 2-var AIC=258.0 → 3-var AIC=-32.4  (ΔAIC=-290.4)
+  Shark 2: 2-var AIC=-425.0 → 3-var AIC=-821.5  (ΔAIC=-396.5)
+
+================================================================================
+3-VARIABLE HMM LIGHT ANALYSIS LOG
+================================================================================
+
+--- AIC improvement ---
+  Shark 1: ΔAIC = -290.4 (strong improvement)
+  Shark 2: ΔAIC = -396.5 (strong improvement)
+
+--- 3-var state structures ---
+  Shark 1:
+    Night Cruising: n=144 (38.0%), depth=36.0m, ODBA=0.632, light=29
+    Surface Active: n=62 (16.4%), depth=1.6m, ODBA=4.410, light=19947
+    Day Cruising: n=173 (45.6%), depth=36.8m, ODBA=0.664, light=26752
+  Shark 2:
+    Surface Active: n=74 (20.4%), depth=0.6m, ODBA=4.537, light=21839
+    Deep Diving / Foraging: n=160 (44.2%), depth=45.0m, ODBA=0.661, light=17986
+    Night Cruising: n=128 (35.4%), depth=24.1m, ODBA=0.490, light=3
+
+--- KEY FINDING ---
+  Adding light significantly improves model fit for BOTH sharks
+  But it reorganizes states DIFFERENTLY:
+  Shark 1: Cruising splits into Day Cruising vs Night Cruising (no Deep Diving)
+  Shark 2: Preserves Cruising / Deep Diving / Surface Active structure
+  → Light captures diel signal; its effect is individual-specific
