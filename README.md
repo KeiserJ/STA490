@@ -35,6 +35,9 @@ If you only open one file in this repository, open **`analysis_clean.ipynb`**.
 ### `analysis_clean.ipynb`
 Main notebook containing the full cleaned analysis pipeline.
 
+### `revised_hmm_output_managed.ipynb`
+Notebook containing the revised analysis.
+
 ### `EDA/`
 Exploratory analysis files and supporting materials used during early stages of the project.
 
@@ -59,6 +62,9 @@ Presentation-ready figures exported from the notebook, including behavioral budg
 ### `README.md`
 Project description and navigation guide.
 
+### `revised_hmm_outputs`
+Revised Project outputs.
+
 ## Analysis Summary
 
 We fit Hidden Markov Models to classify shark behavior into latent states.
@@ -80,27 +86,9 @@ The 3-variable HMM adds:
 
 Adding light improves model fit, but it also reorganizes the state structure differently for each shark. This makes it useful for interpretation, but less suitable for direct state-by-state comparison across sharks.
 
-## Main Results
-
-The main findings of the project are:
-
-- Both sharks show three interpretable behavioral states under the 2-variable HMM.
-- The two sharks differ strongly in how much time they spend in each state.
-- Surface-active behavior occurs during the day only.
-- Nighttime behavior is dominated by cruising in both sharks.
-- Shark 2 shows stronger diel structuring and more persistent deep-diving behavior.
-- Adding light improves the HMM, but reveals individual-specific state reorganization.
-
 ## Reproducing the Analysis
 
 To reproduce the analysis:
 
-1. Open `analysis_clean.ipynb`
-2. Run the notebook from top to bottom
-3. Export figures as needed for presentation or reporting
-
-## Notes
-
-- The notebook is organized around the final project workflow rather than raw exploratory work.
-- Presentation figures are stored separately for convenience.
-- The final presentation emphasizes the **2-variable HMM as the main comparison model** and uses the **3-variable HMM as a follow-up extension**.
+1. Open `analysis_clean.ipynb`, `revised_hmm_output_managed.ipynb`
+2. Run the notebook from top to bottom with the dataset.
