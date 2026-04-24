@@ -1,0 +1,202 @@
+================================================================================
+REVISED SHARK HMM ANALYSIS
+================================================================================
+Output directory: /Users/keiserj/Desktop/uoft year 4/STA490/newdata/revised_hmm_outputs
+Log file: /Users/keiserj/Desktop/uoft year 4/STA490/newdata/revised_hmm_outputs/analysis_log.txt
+Shark 1 shape: (2264202, 29)
+Shark 2 shape: (2171586, 37)
+Shark 1 time range: 2024-06-03 06:58:37 to 2024-06-04 14:25:27.050000
+Shark 2 time range: 2024-06-04 07:55:00 to 2024-06-05 14:04:39.250000
+
+Raw window counts:
+  Shark 1: 379
+  Shark 2: 362
+
+Sensor detachment identification
+--------------------------------------------------------------------------------
+Criteria: depth < 5.0 m AND ODBA > 2.0
+Candidate runs (Shark 1): [(1, 1), (318, 378)]
+Candidate runs (Shark 2): [(1, 1), (289, 361)]
+
+Shark 1
+  Candidate windows: 62
+  Removed windows: 62
+  Removal interval: 2024-06-03 07:00:00 to 2024-06-04 14:25:00
+  Mean removed depth: 1.619
+  Mean removed ODBA: 4.41
+[saved table] revised_hmm_outputs/shark_1_removed_detachment_windows.csv
+
+Shark 2
+  Candidate windows: 74
+  Removed windows: 74
+  Removal interval: 2024-06-04 08:00:00 to 2024-06-05 14:00:00
+  Mean removed depth: 0.632
+  Mean removed ODBA: 4.537
+[saved table] revised_hmm_outputs/shark_2_removed_detachment_windows.csv
+[saved figure] revised_hmm_outputs/fig01_detachment_space.png
+[saved figure] revised_hmm_outputs/fig02_detachment_timeseries.png
+
+Clean window counts:
+  Shark 1: 317
+  Shark 2: 288
+[saved table] revised_hmm_outputs/table01_model_comparison.csv
+
+Model comparison
+--------------------------------------------------------------------------------
+Shark 1, 2-state: logLik=-782.241, AIC=1586.482, BIC=1627.829
+Shark 1, 3-state: logLik=-674.981, AIC=1389.961, BIC=1465.139
+Shark 2, 2-state: logLik=-595.937, AIC=1213.874, BIC=1254.167
+Shark 2, 3-state: logLik=-526.963, AIC=1093.926, BIC=1167.185
+[saved figure] revised_hmm_outputs/fig03_model_comparison_aic_bic.png
+[saved table] revised_hmm_outputs/table02_shark1_2state_summary.csv
+[saved table] revised_hmm_outputs/table03_shark1_3state_summary.csv
+[saved table] revised_hmm_outputs/table04_shark2_2state_summary.csv
+[saved table] revised_hmm_outputs/table05_shark2_3state_summary.csv
+[saved figure] revised_hmm_outputs/fig04_state_structure_2state_3state.png
+
+Primary model used downstream: 2-state HMM
+[saved table] revised_hmm_outputs/table06_primary_behavior_summary_shark1.csv
+[saved table] revised_hmm_outputs/table07_primary_behavior_summary_shark2.csv
+
+Primary 2-state mappings
+Shark 1 mapping: {1: 'Cruising / Routine Swimming', 2: 'Deep Diving / Active Diving'}
+Shark 2 mapping: {1: 'Cruising / Routine Swimming', 2: 'Deep Diving / Active Diving'}
+
+Shark 1
+  Cruising: n=250 (78.9%), depth=34.18±16.19, ODBA=0.564, temp=23.28, light=15906.6
+  Deep Diving: n=67 (21.1%), depth=44.99±30.66, ODBA=0.969, temp=22.28, light=9784.0
+
+Shark 2
+  Cruising: n=139 (48.3%), depth=22.70±7.86, ODBA=0.489, temp=23.57, light=3176.3
+  Deep Diving: n=149 (51.7%), depth=47.88±11.01, ODBA=0.674, temp=22.93, light=16353.2
+[saved figure] revised_hmm_outputs/fig05_decoded_primary_timeseries.png
+[saved figure] revised_hmm_outputs/fig06_behavioral_budgets.png
+[saved figure] revised_hmm_outputs/fig07_diel_composition_by_hour.png
+[saved figure] revised_hmm_outputs/fig08_day_night_budgets.png
+
+Day vs night chi-squared tests
+--------------------------------------------------------------------------------
+Shark 1: chi2=0.658, p=0.417, Cramer's V=0.046
+[saved table] revised_hmm_outputs/shark_1_day_night_contingency.csv
+Shark 2: chi2=112.636, p=2.59e-26, Cramer's V=0.625
+[saved table] revised_hmm_outputs/shark_2_day_night_contingency.csv
+[saved figure] revised_hmm_outputs/fig09_diel_profiles_depth_odba.png
+[saved table] revised_hmm_outputs/table08_tpm_shark1_day.csv
+[saved table] revised_hmm_outputs/table09_tpm_shark1_night.csv
+[saved table] revised_hmm_outputs/table10_tpm_shark2_day.csv
+[saved table] revised_hmm_outputs/table11_tpm_shark2_night.csv
+
+Observed transition dynamics (true consecutive steps)
+--------------------------------------------------------------------------------
+Shark 1 -- Day: Cruising stay=0.962, Deep Diving stay=0.868
+Shark 1 -- Night: Cruising stay=0.923, Deep Diving stay=0.667
+Shark 2 -- Day: Cruising stay=0.917, Deep Diving stay=0.983
+Shark 2 -- Night: Cruising stay=0.991, Deep Diving stay=0.966
+[saved figure] revised_hmm_outputs/fig10_transition_dynamics_day_night.png
+
+Cross-shark Mann-Whitney tests (same labeled behavior)
+--------------------------------------------------------------------------------
+
+Cruising
+  Depth: Shark 1 mean=34.183, Shark 2 mean=22.699, p=2.944e-14
+  ODBA: Shark 1 mean=0.564, Shark 2 mean=0.489, p=1.196e-12
+  Temperature: Shark 1 mean=23.276, Shark 2 mean=23.573, p=0.08081
+  Light: Shark 1 mean=15906.594, Shark 2 mean=3176.258, p=2.774e-18
+
+Deep Diving
+  Depth: Shark 1 mean=44.990, Shark 2 mean=47.881, p=0.1552
+  ODBA: Shark 1 mean=0.969, Shark 2 mean=0.674, p=3.37e-14
+  Temperature: Shark 1 mean=22.284, Shark 2 mean=22.928, p=0.2157
+  Light: Shark 1 mean=9784.021, Shark 2 mean=16353.205, p=3.506e-06
+[saved table] revised_hmm_outputs/table12_mannwhitney_cross_shark.csv
+[saved figure] revised_hmm_outputs/fig11_cross_shark_violins.png
+[saved table] revised_hmm_outputs/table13_jsd_by_hour.csv
+[saved figure] revised_hmm_outputs/fig12_jsd_by_hour.png
+
+Jensen-Shannon divergence by hour
+--------------------------------------------------------------------------------
+Mean JSD=0.472; most similar=04:00 (0.000); most different=10:00 (0.833)
+[saved figure] revised_hmm_outputs/fig13_light_as_diel_proxy.png
+[saved figure] revised_hmm_outputs/fig14_within_state_light_day_night.png
+
+FINAL SUMMARY
+================================================================================
+1) Candidate detachment windows were handled as a QC/artifact problem, not as a biological state.
+2) Both 2-state and 3-state HMMs were fit after QC. The 2-state model is used here as the main biological workflow for interpretability and cross-shark comparability.
+3) If 3-state models still outperform by AIC/BIC, they should be reported as secondary evidence of additional substructure rather than ignored.
+4) Day/night transition analysis was based only on true consecutive 5-minute steps, avoiding artificial transitions created by subsetting.
+5) Light is treated here as a descriptive diel-context variable. Stronger claims about light-driven transitions would require a true covariate-HMM.
+
+Files written to output directory:
+ - analysis_log.txt
+ - fig01_detachment_space.png
+ - fig02_detachment_timeseries.png
+ - fig03_model_comparison_aic_bic.png
+ - fig04_state_structure_2state_3state.png
+ - fig05_decoded_primary_timeseries.png
+ - fig06_behavioral_budgets.png
+ - fig07_diel_composition_by_hour.png
+ - fig08_day_night_budgets.png
+ - fig09_diel_profiles_depth_odba.png
+ - fig10_transition_dynamics_day_night.png
+ - fig11_cross_shark_violins.png
+ - fig12_jsd_by_hour.png
+ - fig13_light_as_diel_proxy.png
+ - fig14_within_state_light_day_night.png
+ - shark_1_day_night_contingency.csv
+ - shark_1_removed_detachment_windows.csv
+ - shark_2_day_night_contingency.csv
+ - shark_2_removed_detachment_windows.csv
+ - table01_model_comparison.csv
+ - table02_shark1_2state_summary.csv
+ - table03_shark1_3state_summary.csv
+ - table04_shark2_2state_summary.csv
+ - table05_shark2_3state_summary.csv
+ - table06_primary_behavior_summary_shark1.csv
+ - table07_primary_behavior_summary_shark2.csv
+ - table08_tpm_shark1_day.csv
+ - table09_tpm_shark1_night.csv
+ - table10_tpm_shark2_day.csv
+ - table11_tpm_shark2_night.csv
+ - table12_mannwhitney_cross_shark.csv
+ - table13_jsd_by_hour.csv
+[saved table] revised_hmm_outputs/table16_shark1_3state_labeled_summary.csv
+[saved table] revised_hmm_outputs/table17_shark2_3state_labeled_summary.csv
+
+3-state decode inspection
+--------------------------------------------------------------------------------
+Shark 1 3-state mapping: {1: 'Shallow state', 3: 'Mid-depth state', 2: 'Deep / high-activity state'}
+Shark 2 3-state mapping: {1: 'Shallow state', 2: 'Mid-depth state', 3: 'Deep / high-activity state'}
+
+Shark 1
+  Shallow: n=84 (26.5%), depth=13.23±5.60, ODBA=0.618, temp=23.89, light=6271.2
+  Mid: n=141 (44.5%), depth=39.40±5.24, ODBA=0.555, temp=23.29, light=26002.9
+  Deep/Active: n=92 (29.0%), depth=53.20±24.51, ODBA=0.823, temp=21.98, light=4771.6
+
+Shark 2
+  Shallow: n=142 (49.3%), depth=22.98±8.02, ODBA=0.490, temp=23.56, light=3109.2
+  Mid: n=117 (40.6%), depth=47.36±6.56, ODBA=0.634, temp=23.02, light=17946.7
+  Deep/Active: n=29 (10.1%), depth=51.20±20.82, ODBA=0.849, temp=22.57, light=11616.0
+[saved figure] revised_hmm_outputs/fig15_decoded_3state_timeseries.png
+[saved figure] revised_hmm_outputs/fig16_3state_diel_composition_by_hour.png
+[saved figure] revised_hmm_outputs/fig17_3state_day_night_budgets.png
+
+3-state day vs night chi-squared tests
+--------------------------------------------------------------------------------
+Shark 1: chi2=81.636, p=1.88e-18, Cramer's V=0.507
+[saved table] revised_hmm_outputs/shark_1_3state_day_night_contingency.csv
+Shark 2: chi2=124.469, p=9.37e-28, Cramer's V=0.657
+[saved table] revised_hmm_outputs/shark_2_3state_day_night_contingency.csv
+[saved table] revised_hmm_outputs/table18_tpm3_shark1_day.csv
+[saved table] revised_hmm_outputs/table19_tpm3_shark1_night.csv
+[saved table] revised_hmm_outputs/table20_tpm3_shark2_day.csv
+[saved table] revised_hmm_outputs/table21_tpm3_shark2_night.csv
+
+3-state transition dynamics (true consecutive steps)
+--------------------------------------------------------------------------------
+Shark 1 -- Day: Shallow stay=0.688, Mid stay=0.938, Deep/Active stay=0.762
+Shark 1 -- Night: Shallow stay=0.779, Mid stay=0.607, Deep/Active stay=0.771
+Shark 2 -- Day: Shallow stay=0.917, Mid stay=0.957, Deep/Active stay=0.885
+Shark 2 -- Night: Shallow stay=0.992, Mid stay=0.917, Deep/Active stay=0.500
+[saved figure] revised_hmm_outputs/fig18_3state_transition_dynamics.png
+[saved figure] revised_hmm_outputs/fig_time_window_comparison.png
